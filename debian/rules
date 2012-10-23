@@ -1,0 +1,71 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# Sample debian/rules that uses debhelper.
+# This file was originally written by Joey Hess and Craig Small.
+# As a special exception, when this file is copied by dh-make into a
+# dh-make output file, you may use that output file without restriction.
+# This special exception was added by Craig Small in version 0.37 of dh-make.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+patch:	
+	patch -p1 < debian/patches/01-modify-nfsen-paths -o $(CURDIR)/etc/nfsen-dist.conf.mod
+
+install: patch
+	export PATH=${PATH}:/usr/bin
+	install -o root -m 755  -d $(CURDIR)/debian/nfsen/var/nfsen
+	install -o root -m 755 -d $(CURDIR)/debian/nfsen/var/nfsen/profiles/live
+	install -o www-data -m 755	-d $(CURDIR)/debian/nfsen/var/nfsen/filters
+	install -o www-data -m 755	-d $(CURDIR)/debian/nfsen/var/nfsen/fmt
+	install -o www-data -m 755	-d $(CURDIR)/debian/nfsen/var/nfsen/profiles-data
+	install -o www-data -m 755	-d $(CURDIR)/debian/nfsen/var/nfsen/profiles-stat
+	install -o www-data -m 755	-d $(CURDIR)/debian/nfsen/var/nfsen/run
+	install -o www-data -m 755	-d $(CURDIR)/debian/nfsen/var/nfsen/tmp
+	install -d $(CURDIR)/debian/nfsen/usr/libexec/nfsen
+	install -d $(CURDIR)/debian/nfsen/etc/init.d
+	install -m 444 $(CURDIR)/installer-items/CopyRecursive.pm  $(CURDIR)/debian/nfsen/usr/libexec/nfsen/
+	install -m 444 $(CURDIR)/installer-items/RRDconvertv1.pm  $(CURDIR)/debian/nfsen/usr/libexec/nfsen/
+	perl $(CURDIR)/install.pl $(CURDIR)/etc/nfsen-dist.conf.mod </dev/null
+	sed -i -e 's:debian/nfsen::g'  $(CURDIR)/debian/nfsen/usr/bin/nfsen
+	sed -i -e 's:debian/nfsen::g'  $(CURDIR)/debian/nfsen/usr/bin/nfsend
+	sed -i -e 's:debian/nfsen::g'  $(CURDIR)/debian/nfsen/usr/bin/RebuildHierarchy.pl
+	sed -i -e 's:debian/nfsen::g'  $(CURDIR)/debian/nfsen/usr/bin/testPlugin
+	sed -i -e 's:debian/nfsen::g'  $(CURDIR)/debian/nfsen/usr/bin/testPlugin
+	sed -i -e 's:debian/nfsen::g'  $(CURDIR)/debian/nfsen/usr/libexec/nfsen/NfConf.pm
+	sed -i -e 's:debian/nfsen::g'  $(CURDIR)/debian/nfsen/etc/nfsen.conf
+
+	install -m 555 $(CURDIR)/debian/nfsen.sh  $(CURDIR)/debian/nfsen/etc/init.d/nfsen
+
+clean:
+	dh_clean
+
+# Build architecture - independent files here .
+binary-indep: install
+
+# Build architecture - dependent files here .
+binary-arch: install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+	dh_installexamples
+	dh_install
+	dh_installman
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms -X/var/nfsen/run -X/var/nfsen/tmp -X/var/nfsen/profiles-stat -X/var/nfsen/profiles-data -X/var/nfsen/fmt -X/var/nfsen/filters
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+# Build architecture-dependent files here.
+binary-arch: install
+
+build:
+	
+
+binary: binary-indep binary-arch

@@ -1,0 +1,12 @@
+Source: nfsen
+Maintainer: Alexander Pyhalov <alp@sfedu.ru>
+Section: net
+Priority: optional
+Standards-Version: 3.9.1
+Build-Depends: debhelper (>= 7.3.8), perl (>= 5.6.0), librrds-perl, libsocket6-perl, nfdump (>=1.6.6), nfdump-sflow (>=1.6.6)
+
+Package: nfsen
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, nfdump (>=1.6.6), nfdump-sflow (>=1.6.6), librrds-perl (>= 1.2.11), perl (>=5.6.0), libmailtools-perl, libmail-sender-perl, libmail-thread-perl, libsocket6-perl
+Description: manages nfdump data flows
+ nfsen can be used to manage nfdump data flows and to create reports from nfdump files

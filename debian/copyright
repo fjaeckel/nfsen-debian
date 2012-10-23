@@ -1,0 +1,25 @@
+This work was packaged for Debian by:
+
+    Alexander Pyhalov <alp@sfedu.ru> on Tue, 11 Oct 2011 13:01:42 +0400
+
+It was downloaded from:
+
+    <http://sourceforge.net/projects/nfsen/>
+
+Upstream Author(s):
+
+    <put author's name and email here>
+    <likewise for another author>
+
+Copyright:
+
+    <Copyright (C) 2004, SWITCH - Teleinformatikdienste fuer Lehre und Forschung>
+
+License:
+    BSD (see "/usr/share/common-licenses/BSD")
+
+The Debian packaging is:
+
+    Copyright (C) 2011 Alexander Pyhalov <alp@sfedu.ru>
+and is licensed under the BSD License
+see "/usr/share/common-licenses/BSD".
